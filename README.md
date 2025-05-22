@@ -1,11 +1,14 @@
-<H3>ENTER YOUR NAME</H3>
-<H3>ENTER YOUR REGISTER NO.</H3>
+<H3>Name: Vishal S </H3>
+<H3>Register No: 212223110063 </H3>
 <H3>EX. NO.3</H3>
 <H3>DATE:</H3>
+
 <H2 aligh = center> Implementation of MLP for a non-linearly separable data</H2>
+
 <h3>Aim:</h3>
 To implement a perceptron for classification using Python
-<H3>Theory:</H3>
+
+<H3>Theory:</H3>a
 Exclusive or is a logical operation that outputs true when the inputs differ.For the XOR gate, the TRUTH table will be as follows:
 
 XOR truth table
@@ -35,12 +38,70 @@ Step 3: Repeat the  iteration  until the losses become constant and  minimum<BR>
     (v)  Append the losses in a list <BR>
 Step 4 : Test for the XOR patterns.
 
-<H3>Program:</H3>
-Insert your code here
+# Program:
+1.importing packages:
+```
+import numpy as np
+import matplotlib.pyplot as plt
+```
+2.model initialization:
+```
+x=np.array([[0,0],[0,1],[1,0],[1,1]])
+y=np.array([[0],[1],[1],[0]])
 
-<H3>Output:</H3>
+input_size=2
+hidden_layer=3
+output_size=1
 
-Show your results here
+w1=np.random.randn(input_size,hidden_layer)
+b1=np.zeros((1,hidden_layer))
+w2=np.random.randn(hidden_layer,output_size)
+b2=np.zeros((1,output_size))
+
+def sigmoid_function(x):
+  return 1/(1+np.exp(-x))
+
+def sigmoid_derivative(x):
+  return x*(1-x)
+```
+3.model mechanism:
+```
+losses=[]
+
+for epochs in range(10000):
+  hidden_input=np.dot(x,w1)+b1
+  hidden_output=sigmoid_function(hidden_input)
+  output_layer_input=np.dot(hidden_output,w2)+b2
+  output=sigmoid_function(output_layer_input)
+
+  error=y-output
+  loss=np.mean(error**2)
+  losses.append(loss)
+
+  d_out=error*sigmoid_derivative(output)
+  d_hidden=np.dot(d_out, w2.T)*sigmoid_derivative(hidden_output)
+
+  w2 += np.dot(hidden_output.T, d_out) * 0.1
+  b2 += np.sum(d_out, axis=0, keepdims=True) * 0.1
+
+  w1 += np.dot(x.T, d_hidden) * 0.1
+  b1 += np.sum(d_hidden, axis=0, keepdims=True) * 0.1
+
+for v,out in zip(x,output):
+  print(f"Input: {v}, Output: {np.round(out)}")
+```
+4.plotting:
+```
+plt.plot(losses)
+plt.title("Loss Curve")
+plt.xlabel("Epoch")
+plt.ylabel("Loss")
+plt.grid(True)
+plt.show()
+```
+# Output:
+![image](https://github.com/user-attachments/assets/6a1732d9-a4dd-4f65-9036-24a0c3dad0cf)
+![image](https://github.com/user-attachments/assets/d934596f-e37a-4f6a-9d86-ce98148ad086)
 
 <H3> Result:</H3>
 Thus, XOR classification problem can be solved using MLP in Python 
